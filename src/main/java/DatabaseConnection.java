@@ -25,7 +25,7 @@ public class DatabaseConnection {
         connectionToDatabase();
         String queryToAddUser = "INSERT INTO users(user_name) VALUES('" + userName + "')";
         PreparedStatement statement = connection.prepareStatement(queryToAddUser);
-        statement.executeQuery();
+        statement.executeUpdate();
         statement.close();
         connection.close();
     }
