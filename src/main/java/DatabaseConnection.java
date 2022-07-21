@@ -34,9 +34,16 @@ public class DatabaseConnection {
         connectionToDatabase();
         int whoBoughtId = getUserId(whoBought);
         int whoOweId = getUserId(whoOwe);
-        String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) " +
-                                        "VALUES('" + whoBoughtId + "','" + whoOweId + "'," + howMuch + ",'" + transactionDescription + "')";
+
+        //String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) " +
+        //                               "VALUES('" + whoBoughtId + "','" + whoOweId + "'," + howMuch + ",'" + transactionDescription + "')";
+
+        String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) VALUES(?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(queryToAddTransaction);
+        statement.setInt(1,whoBoughtId);
+        statement.setInt(2,whoOweId);
+        statement.setInt(3,howMuch);
+        statement.setString(4,transactionDescription);
         statement.executeUpdate();
         statement.close();
         connection.close();
@@ -44,8 +51,9 @@ public class DatabaseConnection {
 
     public static int getUserId(String user_name) throws SQLException {
         connectionToDatabase();
-        String query = "SELECT id FROM users WHERE user_name='" + user_name + "'";
+        String query = "SELECT id FROM users WHERE user_name=?";
         PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, user_name);
         ResultSet resultSet = statement.executeQuery();
         resultSet.next();
 
@@ -56,6 +64,6 @@ public class DatabaseConnection {
     }
 
     public static void main(String[] args) throws SQLException {
-        addTransaction("mich", "adam", 8820, "coca cola");
+        addTransaction("mich", "adam", 8820, "codsada3ca dsacola");
     }
 }
