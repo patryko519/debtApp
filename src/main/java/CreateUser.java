@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class CreateUser {
@@ -19,8 +20,17 @@ public class CreateUser {
             password = scanner.nextLine();
         }
 
-        User user = new User(username, password);
-        user.addUserToDatabase();
+        CreateUser.addUserToDatabase(username, password);
+    }
+
+    public static void addUserToDatabase(String username, String password){
+
+        try {
+            DatabaseConnection.addUser(username,password);
+            System.out.println("User " + username + " has been added to database");
+        } catch (SQLException e) {
+            System.out.println("Couldn't create account. There is another user with such name");
+        }
 
     }
 
