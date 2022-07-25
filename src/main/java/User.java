@@ -1,41 +1,40 @@
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class User {
-    private String userName;
+    private String username;
+    private String password;
+    private HashMap<String, Integer> debts;
 
-    public static boolean isAlpha(String s) {
-        return s != null && s.matches("[a-zA-Z]+");
+
+
+    public User(String username, String password){
+        this.username = username;
+        this.password = password;
     }
 
-    public User(){
-    }
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public void addUserToDatabase(){
-        System.out.println("Enter name of new user");
-        Scanner scanner = new Scanner(System.in);
 
-        String user_name = scanner.nextLine();
-        while (!isAlpha(user_name)){
-            System.out.println("Pleas enter correct name");
-            user_name = scanner.nextLine();
-        }
-
-        setUserName(user_name);
         try {
-            DatabaseConnection.addUser(user_name);
+            DatabaseConnection.addUser(username,password);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        System.out.println("User " + user_name + " has been added to database");
+        System.out.println("User " + username + " has been added to database");
+    }
+
+    public void addTransactionToDatabase(){
+
     }
 
 }

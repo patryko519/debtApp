@@ -12,19 +12,18 @@ public class DatabaseConnection {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url,user,password);
             System.out.println("Connected successfully");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (Exception e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void addUser(String userName) throws SQLException {
+    public static void addUser(String username, String password) throws SQLException {
         connectionToDatabase();
-        String queryToAddUser = "INSERT INTO users(user_name) VALUES('" + userName + "')";
+
+        String queryToAddUser = "INSERT INTO users(username, password) VALUES(?,?)";
         PreparedStatement statement = connection.prepareStatement(queryToAddUser);
+        statement.setString(1, username);
+        statement.setString(2, password);
         statement.executeUpdate();
         statement.close();
         connection.close();
