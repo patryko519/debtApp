@@ -19,9 +19,8 @@ public class Main {
             userChoice = scanner.nextInt();
             switch(userChoice){
                 case 1 -> CreateUser.createNewUser();
-                //case 2 -> user.addTransactionToDatabase();
+                case 2 -> LogInSystem.logIntoSystem();
                 case 3 -> shouldContinue = false;
-                //case 4 -> shouldContinue = false;
             }
 
         }
