@@ -5,7 +5,7 @@ public class User {
     private String userName;
 
     public static boolean isAlpha(String s) {
-        return s != null && s.matches("^[a-zA-Z]*$");
+        return s != null && s.matches("[a-zA-Z]+");
     }
 
     public User(){
@@ -24,6 +24,7 @@ public class User {
 
         String user_name = scanner.nextLine();
         while (!isAlpha(user_name)){
+            System.out.println("Pleas enter correct name");
             user_name = scanner.nextLine();
         }
 
