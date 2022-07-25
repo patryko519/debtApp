@@ -11,9 +11,8 @@ public class DatabaseConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url,user,password);
-            System.out.println("Connected successfully");
         } catch (SQLException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("Couldn't connect to database");
         }
     }
 
@@ -31,12 +30,12 @@ public class DatabaseConnection {
 
     public static void addTransaction(String whoBought, String whoOwe, int howMuch, String transactionDescription) throws SQLException {
         connectionToDatabase();
-        int whoBoughtId = getUserId(whoBought);
-        int whoOweId = getUserId(whoOwe);
+        int whoBoughtId = getUserIdByName(whoBought);
+        int whoOweId = getUserIdByName(whoOwe);
 
-        //String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) " +
-        //                               "VALUES('" + whoBoughtId + "','" + whoOweId + "'," + howMuch + ",'" + transactionDescription + "')";
-
+        /* String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) " +
+                                       "VALUES('" + whoBoughtId + "','" + whoOweId + "'," + howMuch + ",'" + transactionDescription + "')";
+        */
         String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) VALUES(?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(queryToAddTransaction);
         statement.setInt(1,whoBoughtId);
@@ -48,21 +47,49 @@ public class DatabaseConnection {
         connection.close();
     }
 
-    public static int getUserId(String user_name) throws SQLException {
+    public static int getUserIdByName(String username){
         connectionToDatabase();
-        String query = "SELECT id FROM users WHERE user_name=?";
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setString(1, user_name);
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
+        try {
+            String query = "SELECT id FROM users WHERE username=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
 
-        int userId = resultSet.getInt("id");
-        statement.close();
+            int userId = resultSet.getInt("id");
+            statement.close();
 
-        return userId;
+            return userId;
+        } catch (SQLException e) {
+            System.out.println("There is no such user");
+        }
+        return -1;
     }
 
-    public static void main(String[] args) throws SQLException {
-        addTransaction("mich", "adam", 8820, "codsada3ca dsacola");
+    public static int getUserId2(String username, String password){
+        connectionToDatabase();
+        try {
+            String query = "SELECT id FROM users WHERE username=? AND password=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            statement.setString(2, password);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            int userId = resultSet.getInt("id");
+            statement.close();
+            return userId;
+        } catch (SQLException e) {
+            System.out.println("There is no such user");
+        }
+
+        return -1;
+    }
+
+
+
+    public static void main(String[] args){
+        System.out.println(getUserId2("aaa","aan"));
+        //addTransaction("mich", "adam", 8820, "a3ca dla");
     }
 }
