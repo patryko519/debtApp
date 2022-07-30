@@ -1,4 +1,3 @@
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ManagementSystem {
@@ -7,7 +6,6 @@ public class ManagementSystem {
     public static void enterSystem(int idOfUser){
         userId = idOfUser;
         boolean shouldContinue = true;
-        int userChoice;
         Scanner scanner = new Scanner(System.in);
 
         while(shouldContinue){
@@ -15,8 +13,13 @@ public class ManagementSystem {
             System.out.println("2. Check your transactions");
             System.out.println("3. Log out");
 
-            userChoice = scanner.nextInt();
-            switch(userChoice){
+            String userChoice = scanner.nextLine();
+            while(!RegexCheck.isNumeric(userChoice)){
+                System.out.println("Enter integer");
+                userChoice = scanner.nextLine();
+            }
+
+            switch(Integer.valueOf(userChoice)){
                 case 1 -> addNewTransaction();
                 case 2 -> LogInSystem.logIntoSystem();
                 case 3 -> shouldContinue = false;
@@ -28,14 +31,8 @@ public class ManagementSystem {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter name of user who owe you money");
 
-        while (true){
-            try{
-                int idOfDebtor = scanner.nextInt();
-                break;
-            }catch (InputMismatchException e){
-                System.out.println("Enter integer");
-            }
-        }
+        String nameOfDebtor = scanner.nextLine();
+        int idOfDebtor = DatabaseConnection.getUserIdByName(nameOfDebtor);
 
 
 
