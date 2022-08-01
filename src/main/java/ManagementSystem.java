@@ -1,10 +1,13 @@
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ManagementSystem {
     private static int userId;
+    private static String username;
 
-    public static void enterSystem(int idOfUser){
+    public static void enterSystem(int idOfUser, String userName) throws SQLException {
         userId = idOfUser;
+        username = userName;
         boolean shouldContinue = true;
         Scanner scanner = new Scanner(System.in);
 
@@ -21,18 +24,36 @@ public class ManagementSystem {
 
             switch(Integer.valueOf(userChoice)){
                 case 1 -> addNewTransaction();
-                case 2 -> LogInSystem.logIntoSystem();
+                //case 2 -> ;
                 case 3 -> shouldContinue = false;
             }
         }
     }
 
-    private static void addNewTransaction() {
+    private static void addNewTransaction() throws SQLException {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter name of user who owe you money");
 
         String nameOfDebtor = scanner.nextLine();
-        int idOfDebtor = DatabaseConnection.getUserIdByName(nameOfDebtor);
+        System.out.println();
+
+        while(!DatabaseConnection.existsUserByName(nameOfDebtor)) {
+            nameOfDebtor = scanner.nextLine();
+        }
+
+        System.out.println("Enter amount of debt");
+        String amount = scanner.nextLine();
+        System.out.println();
+        while(!RegexCheck.isNumeric(amount)){
+            System.out.println("Enter integer");
+            amount = scanner.nextLine();
+        }
+
+        System.out.println("Enter description");
+        String description = scanner.nextLine();
+        System.out.println();
+
+        DatabaseConnection.addTransaction(username, nameOfDebtor, Integer.valueOf(amount), description);
 
 
 

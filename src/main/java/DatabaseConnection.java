@@ -30,6 +30,7 @@ public class DatabaseConnection {
 
     public static void addTransaction(String whoBought, String whoOwe, int howMuch, String transactionDescription) throws SQLException {
         connectionToDatabase();
+
         int whoBoughtId = getUserIdByName(whoBought);
         int whoOweId = getUserIdByName(whoOwe);
 
@@ -38,10 +39,10 @@ public class DatabaseConnection {
         */
         String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) VALUES(?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(queryToAddTransaction);
-        statement.setInt(1,whoBoughtId);
-        statement.setInt(2,whoOweId);
-        statement.setInt(3,howMuch);
-        statement.setString(4,transactionDescription);
+        statement.setInt(1, whoBoughtId);
+        statement.setInt(2, whoOweId);
+        statement.setInt(3, howMuch);
+        statement.setString(4, transactionDescription);
         statement.executeUpdate();
         statement.close();
         connection.close();
@@ -86,10 +87,27 @@ public class DatabaseConnection {
         return -1;
     }
 
+    public static boolean existsUserByName(String username){
+        connectionToDatabase();
+        try{
+            String query = "SELECT id FROM users WHERE username=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            return resultSet.getBoolean(1);
+        } catch (SQLException e) {
+            System.out.println("no");
+        }
+        return false;
+    }
+
 
 
     public static void main(String[] args){
-        System.out.println(getUserId2("aaa","aan"));
+        //System.out.println(getUserId2("aaa","aan"));
+        System.out.println(existsUserByName("mati"));
         //addTransaction("mich", "adam", 8820, "a3ca dla");
     }
 }

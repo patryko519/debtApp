@@ -1,8 +1,9 @@
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class LogInSystem {
 
-    public static void logIntoSystem(){
+    public static void logIntoSystem() throws SQLException {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Enter username");
@@ -14,7 +15,7 @@ public class LogInSystem {
         int idOfAccount = DatabaseConnection.getUserId2(username,password);
 
         if(idOfAccount != -1){
-            ManagementSystem.enterSystem(idOfAccount);
+            ManagementSystem.enterSystem(idOfAccount, username);
         } else{
             System.out.println("Incorrect username or login");
         }
