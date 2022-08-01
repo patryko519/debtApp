@@ -1,9 +1,11 @@
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class ManagementSystem {
     private static int userId;
     private static String username;
+    private static HashMap transactions;
 
     public static void enterSystem(int idOfUser, String userName) throws SQLException {
         userId = idOfUser;
@@ -24,7 +26,7 @@ public class ManagementSystem {
 
             switch(Integer.valueOf(userChoice)){
                 case 1 -> addNewTransaction();
-                //case 2 -> ;
+                case 2 -> checkTransactions();
                 case 3 -> shouldContinue = false;
             }
         }
@@ -54,8 +56,10 @@ public class ManagementSystem {
         System.out.println();
 
         DatabaseConnection.addTransaction(username, nameOfDebtor, Integer.valueOf(amount), description);
+    }
 
-
-
+    public static void checkTransactions() throws SQLException {
+        transactions = DatabaseConnection.checkTransactions(userId);
+        System.out.println(transactions);
     }
 }

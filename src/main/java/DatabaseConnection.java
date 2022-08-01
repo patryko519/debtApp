@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.HashMap;
 
 
 public class DatabaseConnection {
@@ -98,9 +99,50 @@ public class DatabaseConnection {
 
             return resultSet.getBoolean(1);
         } catch (SQLException e) {
-            System.out.println("no");
+            System.out.println("There is no such a user");
         }
         return false;
+    }
+
+    public static HashMap<Integer, String> checkTransactions(int userId) throws SQLException {
+        HashMap transaction = new HashMap<String, String>();
+        connectionToDatabase();
+        try {
+            String query = "SELECT debtor_id, amount, transaction_description FROM transactions WHERE buyer_id=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            String debtorName = getUsernameById(resultSet.getInt("debtor_id"));
+            int amount= resultSet.getInt("amount");
+            String description = resultSet.getString("transaction_description");
+
+            transaction.put(debtorName, "owe you " + amount + " for " + description);
+
+            statement.close();
+        } catch (SQLException e) {
+            throw new SQLException();
+        }
+
+        return transaction;
+    }
+
+    public static String getUsernameById(int userId) throws SQLException {
+        connectionToDatabase();
+        try {
+            String query = "SELECT username FROM users WHERE id=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+
+            String username = resultSet.getString("username");
+            statement.close();
+            return username;
+        } catch (SQLException e) {
+            throw new SQLException();
+        }
     }
 
 
