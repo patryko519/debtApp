@@ -37,7 +37,6 @@ public class ManagementSystem {
         System.out.println("Enter name of user who owe you money");
 
         String nameOfDebtor = scanner.nextLine();
-        System.out.println();
 
         while(!DatabaseConnection.existsUserByName(nameOfDebtor)) {
             nameOfDebtor = scanner.nextLine();
@@ -45,21 +44,25 @@ public class ManagementSystem {
 
         System.out.println("Enter amount of debt");
         String amount = scanner.nextLine();
-        System.out.println();
+
         while(!RegexCheck.isNumeric(amount)){
-            System.out.println("Enter integer");
+            System.out.println("Enter positive integer");
             amount = scanner.nextLine();
         }
 
         System.out.println("Enter description");
         String description = scanner.nextLine();
-        System.out.println();
 
         DatabaseConnection.addTransaction(username, nameOfDebtor, Integer.valueOf(amount), description);
     }
 
     public static void checkTransactions() throws SQLException {
         transactions = DatabaseConnection.checkTransactions(userId);
-        System.out.println(transactions);
+
+        for(Object transaction : transactions.values()){
+            System.out.println(transaction);
+        }
+
+        System.out.println();
     }
 }

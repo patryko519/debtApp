@@ -100,29 +100,59 @@ public class DatabaseConnection {
             return resultSet.getBoolean(1);
         } catch (SQLException e) {
             System.out.println("There is no such a user");
+            System.out.println("Enter correct name");
         }
         return false;
     }
 
     public static HashMap<Integer, String> checkTransactions(int userId) throws SQLException {
-        HashMap transaction = new HashMap<String, String>();
+        HashMap transaction = new HashMap<Integer, String>();
+        int amount;
+        String descriptionOfTransaction;
+        int indexOfTransaction = 1;
         connectionToDatabase();
+
         try {
             String query = "SELECT debtor_id, amount, transaction_description FROM transactions WHERE buyer_id=?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
+            ResultSet buyer = statement.executeQuery();
+            String debtorName;
 
-            String debtorName = getUsernameById(resultSet.getInt("debtor_id"));
-            int amount= resultSet.getInt("amount");
-            String description = resultSet.getString("transaction_description");
+            while (!buyer.isLast()) {
+                buyer.next();
 
-            transaction.put(debtorName, "owe you " + amount + " for " + description);
+                debtorName = getUsernameById(buyer.getInt("debtor_id"));
+                amount = buyer.getInt("amount");
+                descriptionOfTransaction = buyer.getString("transaction_description");
 
+                transaction.put(indexOfTransaction, debtorName + " owe you " + amount + " for " + descriptionOfTransaction);
+                indexOfTransaction++;
+            }
+        }catch (SQLException e) {
+            System.out.println("Nobody Owes You Anything");
+        }
+
+        try {
+            String query = "SELECT buyer_id, amount, transaction_description FROM transactions WHERE debtor_id=?";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+            ResultSet debtor = statement.executeQuery();
+            String buyerName;
+
+            while (!debtor.isLast()) {
+                debtor.next();
+
+                buyerName = getUsernameById(debtor.getInt("buyer_id"));
+                amount = debtor.getInt("amount");
+                descriptionOfTransaction = debtor.getString("transaction_description");
+
+                transaction.put(indexOfTransaction, "You owe " + buyerName + " " + amount + " for " + descriptionOfTransaction);
+                indexOfTransaction++;
+            }
             statement.close();
         } catch (SQLException e) {
-            throw new SQLException();
+            System.out.println("You don't owe anyone anything");
         }
 
         return transaction;
