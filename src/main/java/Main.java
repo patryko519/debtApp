@@ -7,6 +7,8 @@ public class Main {
         boolean shouldContinue = true;
         Scanner scanner = new Scanner(System.in);
 
+        new MainGUI();
+
         System.out.println("Welcome. Choose your option");
 
 
@@ -15,12 +17,6 @@ public class Main {
             System.out.println("2. Log in");
             System.out.println("3. Exit");
 
-//            try{
-//                userChoice = scanner.nextInt();
-//            } catch (InputMismatchException e) {
-//                System.out.println("Enter proper integer");
-//                scanner.nextLine();
-//            }
             String userChoice = scanner.nextLine();
             while(!RegexCheck.isNumeric(userChoice)){
                 System.out.println("Enter integer");

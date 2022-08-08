@@ -4,23 +4,24 @@ import java.util.Scanner;
 public class CreateUser {
 
     public static void createNewUser(){
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Enter name of new user");
-        String username = scanner.nextLine();
-        while (!RegexCheck.isUsernameValid(username)){
-            System.out.println("Pleas enter correct username");
-            username = scanner.nextLine();
-        }
-
-        System.out.println("Enter your password");
-        String password = scanner.nextLine();
-        while (!RegexCheck.isPasswordValid(password)){
-            System.out.println("Pleas enter correct password");
-            password = scanner.nextLine();
-        }
-
-        CreateUser.addUserToDatabase(username, password);
+        new CreateUserGUI();
+//        Scanner scanner = new Scanner(System.in);
+//
+//        System.out.println("Enter name of new user");
+//        String username = scanner.nextLine();
+//        while (!RegexCheck.isUsernameValid(username)){
+//            System.out.println("Pleas enter correct username");
+//            username = scanner.nextLine();
+//        }
+//
+//        System.out.println("Enter your password");
+//        String password = scanner.nextLine();
+//        while (!RegexCheck.isPasswordValid(password)){
+//            System.out.println("Pleas enter correct password");
+//            password = scanner.nextLine();
+//        }
+//
+//        CreateUser.addUserToDatabase(username, password);
     }
 
     public static void addUserToDatabase(String username, String password){
