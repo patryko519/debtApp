@@ -4,19 +4,15 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class CreateUserGUI extends MainFrame implements ActionListener {
-    private JLabel userLabel;
-    private JLabel passwordLabel;
-    private JTextField userText;
-    private JPasswordField passwordText;
-
-    private JButton createButton;
+    private final JTextField userText;
+    private final JPasswordField passwordText;
 
     public CreateUserGUI() {
         frame.add(panel);
 
         panel.setLayout(null);
 
-        userLabel = new JLabel("User");
+        JLabel userLabel = new JLabel("User");
         userLabel.setBounds(10,20,80,25);
         panel.add(userLabel);
 
@@ -24,7 +20,7 @@ public class CreateUserGUI extends MainFrame implements ActionListener {
         userText.setBounds(100,20,165,25);
         panel.add(userText);
 
-        passwordLabel = new JLabel("Password");
+        JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setBounds(10,50,80,25);
         panel.add(passwordLabel);
 
@@ -32,7 +28,7 @@ public class CreateUserGUI extends MainFrame implements ActionListener {
         passwordText.setBounds(100, 50, 165, 25);
         panel.add(passwordText);
 
-        createButton = new JButton("Create");
+        JButton createButton = new JButton("Create");
         createButton.setBounds(10, 80, 80, 25);
         createButton.addActionListener(this);
         panel.add(createButton);

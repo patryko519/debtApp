@@ -3,14 +3,13 @@ import java.sql.SQLException;
 
 public class MainGUI extends MainFrame{
 
-    private JLabel label;
     public MainGUI(){
         frame.add(panel);
         frame.setVisible(true);
 
         panel.setLayout(null);
 
-        label = new JLabel("Welcome to debt manager. Choose your option");
+        JLabel label = new JLabel("Welcome to debt manager. Choose your option");
         label.setBounds(10,0,450,20);
         panel.add(label);
 
