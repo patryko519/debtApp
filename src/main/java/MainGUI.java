@@ -1,15 +1,10 @@
 import javax.swing.*;
 import java.sql.SQLException;
 
-public class MainGUI {
-    private JFrame frame;
-    private JPanel panel;
+public class MainGUI extends MainFrame{
+
     private JLabel label;
     public MainGUI(){
-        panel = new JPanel();
-        frame = new JFrame();
-        frame.setSize(485,200);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
         frame.setVisible(true);
 
@@ -23,6 +18,7 @@ public class MainGUI {
         newAccountButton.setBounds(5,80,150,25);
         panel.add(newAccountButton);
         newAccountButton.addActionListener(e -> new CreateUserGUI());
+        newAccountButton.addActionListener(e -> frame.dispose());
 
         JButton logInButton = new JButton("Log in");
         logInButton.setBounds(160,80,150,25);

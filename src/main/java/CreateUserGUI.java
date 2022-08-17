@@ -3,9 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class CreateUserGUI extends JFrame implements ActionListener {
-    private JFrame frame;
-    private JPanel panel;
+public class CreateUserGUI extends MainFrame implements ActionListener {
     private JLabel userLabel;
     private JLabel passwordLabel;
     private JTextField userText;
@@ -14,12 +12,7 @@ public class CreateUserGUI extends JFrame implements ActionListener {
     private JButton createButton;
 
     public CreateUserGUI() {
-        panel = new JPanel();
-        frame = new JFrame();
-        frame.setSize(485,200);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
-        frame.setVisible(true);
 
         panel.setLayout(null);
 
@@ -54,7 +47,8 @@ public class CreateUserGUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this,"Enter correct username or password");
         } else{
             addUserToDatabase(username, password);
-            frame.setVisible(false);
+            frame.dispose();
+            new MainGUI();
         }
 
     }
