@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.HashMap;
+import java.util.Vector;
 
 
 public class DatabaseConnection {
@@ -35,9 +36,6 @@ public class DatabaseConnection {
         int whoBoughtId = getUserIdByName(whoBought);
         int whoOweId = getUserIdByName(whoOwe);
 
-        /* String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) " +
-                                       "VALUES('" + whoBoughtId + "','" + whoOweId + "'," + howMuch + ",'" + transactionDescription + "')";
-        */
         String queryToAddTransaction = "INSERT INTO transactions(buyer_id, debtor_id, amount, transaction_description) VALUES(?,?,?,?)";
         PreparedStatement statement = connection.prepareStatement(queryToAddTransaction);
         statement.setInt(1, whoBoughtId);
@@ -68,7 +66,7 @@ public class DatabaseConnection {
         return -1;
     }
 
-    public static int getUserId2(String username, String password){
+    public static int getUserIdIfExists(String username, String password){
         connectionToDatabase();
         try {
             String query = "SELECT id FROM users WHERE username=? AND password=?";
@@ -175,11 +173,32 @@ public class DatabaseConnection {
         }
     }
 
+    public static Vector<String> usersNames() throws SQLException {
+        Vector<String> names = new Vector<String>();
+        connectionToDatabase();
 
+        try {
+            String query = "SELECT username FROM users";
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
 
-    public static void main(String[] args){
-        //System.out.println(getUserId2("aaa","aan"));
-        System.out.println(existsUserByName("mati"));
-        //addTransaction("mich", "adam", 8820, "a3ca dla");
+            while (!resultSet.isLast()) {
+                resultSet.next();
+
+                names.add(resultSet.getString("username"));
+            }
+        } catch (SQLException e) {
+            throw new SQLException();
+        }
+
+        return names;
+    }
+
+    public static void main(String[] args) throws SQLException {
+        Vector<String> test = usersNames();
+        for(String names : test){
+            System.out.println(names);
+        }
     }
 }

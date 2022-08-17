@@ -5,8 +5,6 @@ public class MainGUI extends MainFrame{
 
     public MainGUI(){
         frame.add(panel);
-        frame.setVisible(true);
-
         panel.setLayout(null);
 
         JLabel label = new JLabel("Welcome to debt manager. Choose your option");
@@ -22,13 +20,8 @@ public class MainGUI extends MainFrame{
         JButton logInButton = new JButton("Log in");
         logInButton.setBounds(160,80,150,25);
         panel.add(logInButton);
-        logInButton.addActionListener(e -> {
-            try {
-                LogInSystem.logIntoSystem();
-            } catch (SQLException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        logInButton.addActionListener(e -> new LogInGUI());
+        logInButton.addActionListener(e -> frame.dispose());
 
         JButton exitButton = new JButton("Exit");
         exitButton.setBounds(315,80,150,25);

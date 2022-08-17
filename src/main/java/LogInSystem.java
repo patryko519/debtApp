@@ -12,7 +12,7 @@ public class LogInSystem {
         System.out.println("Enter password");
         String password = scanner.nextLine();
 
-        int idOfAccount = DatabaseConnection.getUserId2(username,password);
+        int idOfAccount = DatabaseConnection.getUserIdIfExists(username,password);
 
         if(idOfAccount != -1){
             ManagementSystem.enterSystem(idOfAccount, username);

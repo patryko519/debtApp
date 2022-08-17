@@ -3,13 +3,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class CreateUserGUI extends MainFrame implements ActionListener {
+public class CreateUserGUI extends MainFrame{
     private final JTextField userText;
     private final JPasswordField passwordText;
 
     public CreateUserGUI() {
         frame.add(panel);
-
         panel.setLayout(null);
 
         JLabel userLabel = new JLabel("User");
@@ -30,12 +29,16 @@ public class CreateUserGUI extends MainFrame implements ActionListener {
 
         JButton createButton = new JButton("Create");
         createButton.setBounds(10, 80, 80, 25);
-        createButton.addActionListener(this);
         panel.add(createButton);
+        createButton.addActionListener(e -> addUserButton());
+
+        JButton goBackButton = new JButton("Back");
+        goBackButton.setBounds(10, 110, 80, 25);
+        panel.add(goBackButton);
+        goBackButton.addActionListener(a -> exitPanel());
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void addUserButton() {
 
         String username = userText.getText();
         String password = passwordText.getText();
@@ -43,11 +46,11 @@ public class CreateUserGUI extends MainFrame implements ActionListener {
             JOptionPane.showMessageDialog(this,"Enter correct username or password");
         } else{
             addUserToDatabase(username, password);
-            frame.dispose();
-            new MainGUI();
+            exitPanel();
         }
-
     }
+
+
 
     public void addUserToDatabase(String username, String password){
 
@@ -59,4 +62,5 @@ public class CreateUserGUI extends MainFrame implements ActionListener {
         }
 
     }
+
 }

@@ -12,4 +12,9 @@ public class MainFrame extends JFrame{
         frame.setVisible(true);
         panel = new JPanel();
     }
+
+    public void exitPanel(){
+        frame.dispose();
+        new MainGUI();
+    }
 }
