@@ -1,6 +1,6 @@
 import javax.swing.*;
 
-public class LogInGUI extends MainFrame{
+public class LogInGUI extends Frame {
 
     private final JTextField userText;
     private final JPasswordField passwordText;

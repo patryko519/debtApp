@@ -2,12 +2,20 @@ import javax.swing.*;
 import java.sql.SQLException;
 import java.util.Vector;
 
-public class AddTransactionGUI extends MainFrame{
+public class AddTransactionGUI extends Frame {
 
     private JComboBox<String> list;
     private SpinnerModel model;
     private JSpinner spinner;
+    private JToggleButton test;
+    private int typeOfTransaction;
+    private String username;
+    private JTextField transactionDescription;
+
     public AddTransactionGUI(int userId, String username) throws SQLException {
+        this.username = username;
+
+        frame.setSize(485,275);
 
         frame.add(panel);
         panel.setLayout(null);
@@ -36,26 +44,44 @@ public class AddTransactionGUI extends MainFrame{
         descriptionLabel.setBounds(10,80,80,25);
         panel.add(descriptionLabel);
 
-
-        //need to change height
-        JTextField transactionDescription = new JTextField();
+        transactionDescription = new JTextField();
         transactionDescription.setBounds(100,80,165,50);
         panel.add(transactionDescription);
 
         JButton addTransactionButton = new JButton("Add");
-        addTransactionButton.setBounds(5,110,200,25);
+        addTransactionButton.setBounds(5,140,200,25);
         panel.add(addTransactionButton);
-        addTransactionButton.addActionListener(e -> addTransaction());
+        addTransactionButton.addActionListener(e -> {
+            try {
+                addTransaction();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         JButton backButton = new JButton("Log out");
-        backButton.setBounds(5,120,200,25);
+        backButton.setBounds(5,170,200,25);
         panel.add(backButton);
         backButton.addActionListener(e -> new ManagementSystemGUI(userId,username));
         backButton.addActionListener(e -> frame.dispose());
+
+        test = new JToggleButton("Incoming");
+        test.setBounds(5,200,100,25);
+        panel.add(test);
+        test.addActionListener(e -> typeOfTransaction());
     }
 
-    public void addTransaction(){
-        //String selectedFruit = "You selected " + list.getItemAt(list.getSelectedIndex());
-        System.out.println(list.getItemAt(list.getSelectedIndex()));
+    public void addTransaction() throws SQLException {
+        DatabaseConnection.addTransaction(username, list.getItemAt(list.getSelectedIndex()), (double) spinner.getValue(), transactionDescription.getText());
+    }
+
+    public void typeOfTransaction(){
+        if(test.isSelected()){
+            test.setText("Outgoing");
+            typeOfTransaction = 1;
+        }else{
+            test.setText("Incoming");
+            typeOfTransaction = -1;
+        }
     }
 }

@@ -30,7 +30,7 @@ public class DatabaseConnection {
         connection.close();
     }
 
-    public static void addTransaction(String whoBought, String whoOwe, int howMuch, String transactionDescription) throws SQLException {
+    public static void addTransaction(String whoBought, String whoOwe, double howMuch, String transactionDescription) throws SQLException {
         connectionToDatabase();
 
         int whoBoughtId = getUserIdByName(whoBought);
@@ -40,7 +40,7 @@ public class DatabaseConnection {
         PreparedStatement statement = connection.prepareStatement(queryToAddTransaction);
         statement.setInt(1, whoBoughtId);
         statement.setInt(2, whoOweId);
-        statement.setInt(3, howMuch);
+        statement.setDouble(3, howMuch);
         statement.setString(4, transactionDescription);
         statement.executeUpdate();
         statement.close();
@@ -181,7 +181,6 @@ public class DatabaseConnection {
             String query = "SELECT username FROM users";
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
 
             while (!resultSet.isLast()) {
                 resultSet.next();

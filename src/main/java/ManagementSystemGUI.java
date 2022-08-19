@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.sql.SQLException;
 
-public class ManagementSystemGUI extends MainFrame{
+public class ManagementSystemGUI extends Frame {
 
     public ManagementSystemGUI(int userId, String username){
 

@@ -1,7 +1,6 @@
 import javax.swing.*;
-import java.sql.SQLException;
 
-public class MainGUI extends MainFrame{
+public class MainGUI extends Frame {
 
     public MainGUI(){
         frame.add(panel);

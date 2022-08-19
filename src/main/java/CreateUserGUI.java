@@ -1,9 +1,7 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
-public class CreateUserGUI extends MainFrame{
+public class CreateUserGUI extends Frame {
     private final JTextField userText;
     private final JPasswordField passwordText;
 

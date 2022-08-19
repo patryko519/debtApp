@@ -1,11 +1,11 @@
 import javax.swing.*;
 
-public class MainFrame extends JFrame{
+public class Frame extends JFrame{
 
     protected JFrame frame;
     protected JPanel panel;
 
-    public MainFrame(){
+    public Frame(){
         frame = new JFrame();
         frame.setSize(485,200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
