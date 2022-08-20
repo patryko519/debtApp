@@ -101,10 +101,10 @@ public class AddTransactionGUI extends Frame {
     public void typeOfTransaction(){
         if(test.isSelected()){
             test.setText("Outgoing");
-            typeOfTransaction = 1;
+            typeOfTransaction = -1;
         }else{
             test.setText("Incoming");
-            typeOfTransaction = -1;
+            typeOfTransaction = 1;
         }
     }
 }
