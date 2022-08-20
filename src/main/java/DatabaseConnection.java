@@ -174,7 +174,7 @@ public class DatabaseConnection {
     }
 
     public static Vector<String> usersNames() throws SQLException {
-        Vector<String> names = new Vector<String>();
+        Vector<String> names = new Vector<>();
         connectionToDatabase();
 
         try {

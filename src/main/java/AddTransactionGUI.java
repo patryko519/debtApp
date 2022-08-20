@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -6,12 +7,12 @@ import java.util.Vector;
 
 public class AddTransactionGUI extends Frame {
 
-    private JComboBox<String> list;
-    private JTextField amountField;
-    private JToggleButton test;
-    private int typeOfTransaction;
-    private String username;
-    private JTextField transactionDescription;
+    private final JComboBox<String> list;
+    private final JTextField amountField;
+    private final JButton transactionType;
+    private int typeOfTransaction=1;
+    private final String username;
+    private final JTextField transactionDescription;
 
     public AddTransactionGUI(int userId, String username) throws SQLException {
         this.username = username;
@@ -24,10 +25,16 @@ public class AddTransactionGUI extends Frame {
         Vector<String> names = DatabaseConnection.usersNames();
         names.remove(username);
 
-        test = new JToggleButton("Incoming");
-        test.setBounds(192,10,100,25);
-        panel.add(test);
-        test.addActionListener(e -> typeOfTransaction());
+//        transactionType = new JToggleButton("Incoming");
+//        transactionType.setBounds(192,10,100,25);
+//        transactionType.setContentAreaFilled(false);
+//        panel.add(transactionType);
+//        transactionType.addActionListener(e -> typeOfTransaction());
+
+        transactionType = new JButton("Incoming");
+        transactionType.setBounds(192,10,100,25);
+        panel.add(transactionType);
+        transactionType.addActionListener(e -> typeOfTransaction());
 
         JLabel userLabel = new JLabel("User");
         userLabel.setBounds(10,50,80,25);
@@ -99,11 +106,11 @@ public class AddTransactionGUI extends Frame {
     }
 
     public void typeOfTransaction(){
-        if(test.isSelected()){
-            test.setText("Outgoing");
+        if("Incoming".equals(transactionType.getText() )){
+            transactionType.setText("Outgoing");
             typeOfTransaction = -1;
         }else{
-            test.setText("Incoming");
+            transactionType.setText("Incoming");
             typeOfTransaction = 1;
         }
     }
