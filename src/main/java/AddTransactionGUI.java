@@ -21,6 +21,7 @@ public class AddTransactionGUI extends Frame {
         panel.setLayout(null);
 
         Vector<String> names = DatabaseConnection.usersNames();
+        names.remove(username);
 
         JLabel userLabel = new JLabel("User");
         userLabel.setBounds(10,20,80,25);
