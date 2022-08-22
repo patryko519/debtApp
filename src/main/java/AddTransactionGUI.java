@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.SQLException;
@@ -24,12 +23,6 @@ public class AddTransactionGUI extends Frame {
 
         Vector<String> names = DatabaseConnection.usersNames();
         names.remove(username);
-
-//        transactionType = new JToggleButton("Incoming");
-//        transactionType.setBounds(192,10,100,25);
-//        transactionType.setContentAreaFilled(false);
-//        panel.add(transactionType);
-//        transactionType.addActionListener(e -> typeOfTransaction());
 
         transactionType = new JButton("Incoming");
         transactionType.setBounds(192,10,100,25);

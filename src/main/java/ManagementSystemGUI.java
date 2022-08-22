@@ -27,7 +27,13 @@ public class ManagementSystemGUI extends Frame {
         JButton checkTransactionsButton = new JButton("Check your transactions");
         checkTransactionsButton.setBounds(5,80,200,25);
         panel.add(checkTransactionsButton);
-        checkTransactionsButton.addActionListener(e -> new CheckTransactionGUI());
+        checkTransactionsButton.addActionListener(e -> {
+            try {
+                new CheckTransactionGUI(username);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         checkTransactionsButton.addActionListener(e -> frame.dispose());
 
         JButton logOutButton = new JButton("Log out");
