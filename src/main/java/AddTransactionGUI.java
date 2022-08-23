@@ -11,7 +11,7 @@ public class AddTransactionGUI extends Frame {
     private final JButton transactionType;
     private int typeOfTransaction=1;
     private final String username;
-    private final JTextField transactionDescription;
+    private final JTextArea transactionDescription;
 
     public AddTransactionGUI(int userId, String username) throws SQLException {
         this.username = username;
@@ -49,8 +49,10 @@ public class AddTransactionGUI extends Frame {
         descriptionLabel.setBounds(10,110,80,25);
         panel.add(descriptionLabel);
 
-        transactionDescription = new JTextField();
+        transactionDescription = new JTextArea();
         transactionDescription.setBounds(100,110,165,50);
+        transactionDescription.setLineWrap(true);
+        transactionDescription.setWrapStyleWord(true);
         panel.add(transactionDescription);
 
         JButton addTransactionButton = new JButton("Add");
