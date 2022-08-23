@@ -1,13 +1,13 @@
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import javax.swing.text.MaskFormatter;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Vector;
 
 public class AddTransactionGUI extends Frame {
 
     private final JComboBox<String> list;
-    private final JTextField amountField;
+    private final JFormattedTextField amountField;
     private final JButton transactionType;
     private int typeOfTransaction=1;
     private final String username;
@@ -41,26 +41,9 @@ public class AddTransactionGUI extends Frame {
         amountLabel.setBounds(10,80,80,25);
         panel.add(amountLabel);
 
-        amountField = new JTextField("0.00");
+        amountField = new JFormattedTextField(getMaskFormatter("####.##"));
         amountField.setBounds(100,80,80,25);
         panel.add(amountField);
-
-        amountField.addKeyListener(new KeyAdapter() {
-            int a = 0;
-            @Override
-            public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-
-                if(c == '.'){
-                    if(a>0){
-                        e.consume();
-                    }
-                    a++;
-                } else if(!Character.isDigit(c)){
-                    e.consume();
-                }
-            }
-        });
 
         JLabel descriptionLabel = new JLabel("Description");
         descriptionLabel.setBounds(10,110,80,25);
@@ -106,5 +89,16 @@ public class AddTransactionGUI extends Frame {
             transactionType.setText("Incoming");
             typeOfTransaction = 1;
         }
+    }
+
+    private MaskFormatter getMaskFormatter(String format) {
+        MaskFormatter mask = null;
+        try {
+            mask = new MaskFormatter(format);
+            mask.setPlaceholderCharacter('0');
+        }catch (ParseException ex) {
+            ex.printStackTrace();
+        }
+        return mask;
     }
 }
