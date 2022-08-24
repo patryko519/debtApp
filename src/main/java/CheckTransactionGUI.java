@@ -29,6 +29,14 @@ public class CheckTransactionGUI extends Frame{
         listOfUsers = new JComboBox<>(names);
         listOfUsers.setBounds(160,40,165,25);
         panel.add(listOfUsers);
+
+        emptyTransaction = new JLabel("");
+
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(160,200,165,25);
+        panel.add(backButton);
+        backButton.addActionListener(e -> new ManagementSystemGUI(username));
+        backButton.addActionListener(e -> frame.dispose());
     }
 
     public void typeOfTransaction(){
@@ -36,11 +44,21 @@ public class CheckTransactionGUI extends Frame{
             transactionType.setText("Incoming");
             incomingTransactions();
         }else if("Incoming".equals(transactionType.getText())){
-            panel.remove(listOfTransactions);
+            if(listOfTransactions.isEnabled()){
+                panel.remove(listOfTransactions);
+            }
+            if(emptyTransaction.isEnabled()){
+                panel.remove(emptyTransaction);
+            }
             transactionType.setText("Outgoing");
             outgoingTransactions();
         }else{
-            panel.remove(listOfTransactions);
+            if(listOfTransactions.isEnabled()){
+                panel.remove(listOfTransactions);
+            }
+            if(emptyTransaction.isEnabled()){
+                panel.remove(emptyTransaction);
+            }
             transactionType.setText("Incoming");
             incomingTransactions();
         }
@@ -50,16 +68,19 @@ public class CheckTransactionGUI extends Frame{
         String secondUser = listOfUsers.getItemAt(listOfUsers.getSelectedIndex());
         int secondUserId = DatabaseConnection.getUserIdByName(secondUser);
         Vector<Tuple<Double, String>> transactions = DatabaseConnection.checkTransactions(secondUserId, userId);
+        listOfTransactions = new JList<>((transactions));
 
         if(!transactions.isEmpty()){
             listOfTransactions = new JList<>((transactions));
-            listOfTransactions.setBounds(160, 70, 100, 100);
+            listOfTransactions.setBounds(190, 70, 105, 100);
             panel.add(listOfTransactions);
             panel.repaint();
         }else{
-            emptyTransaction = new JLabel("List of transactions is empty");
-            emptyTransaction.setBounds(160,70,100,100);
+            System.out.println("hello");
+            emptyTransaction.setText("Transaction list is empty");
+            emptyTransaction.setBounds(140,70,205,100);
             panel.add(emptyTransaction);
+            panel.repaint();
         }
 
 
@@ -69,16 +90,17 @@ public class CheckTransactionGUI extends Frame{
         String secondUser = listOfUsers.getItemAt(listOfUsers.getSelectedIndex());
         int secondUserId = DatabaseConnection.getUserIdByName(secondUser);
         Vector<Tuple<Double,String>> transactions = DatabaseConnection.checkTransactions(userId,secondUserId);
+        listOfTransactions = new JList<>((transactions));
 
         if(!transactions.isEmpty()){
-            listOfTransactions = new JList<>((transactions));
-            listOfTransactions.setBounds(160,70,100,100);
+            listOfTransactions.setBounds(190,70,105,100);
             panel.add(listOfTransactions);
             panel.repaint();
         }else{
-            emptyTransaction = new JLabel("List of transactions is empty");
-            emptyTransaction.setBounds(160,70,100,100);
+            emptyTransaction.setText("Transaction list is empty");
+            emptyTransaction.setBounds(140,70,205,100);
             panel.add(emptyTransaction);
+            panel.repaint();
         }
     }
 }

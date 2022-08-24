@@ -13,8 +13,10 @@ public class AddTransactionGUI extends Frame {
     private final String username;
     private final JTextArea transactionDescription;
 
-    public AddTransactionGUI(int userId, String username) throws SQLException {
+    public AddTransactionGUI(String username) throws SQLException {
         this.username = username;
+
+        int userId = DatabaseConnection.getUserIdByName(username);
 
         frame.setSize(485,275);
 
@@ -69,7 +71,7 @@ public class AddTransactionGUI extends Frame {
         JButton backButton = new JButton("Back");
         backButton.setBounds(5,200,200,25);
         panel.add(backButton);
-        backButton.addActionListener(e -> new ManagementSystemGUI(userId,username));
+        backButton.addActionListener(e -> new ManagementSystemGUI(username));
         backButton.addActionListener(e -> frame.dispose());
     }
 

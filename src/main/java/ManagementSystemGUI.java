@@ -3,7 +3,7 @@ import java.sql.SQLException;
 
 public class ManagementSystemGUI extends Frame {
 
-    public ManagementSystemGUI(int userId, String username){
+    public ManagementSystemGUI(String username){
 
         frame.add(panel);
         panel.setLayout(null);
@@ -17,7 +17,7 @@ public class ManagementSystemGUI extends Frame {
         panel.add(newTransactionButton);
         newTransactionButton.addActionListener(e -> {
             try {
-                new AddTransactionGUI(userId, username);
+                new AddTransactionGUI(username);
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }

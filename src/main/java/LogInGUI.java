@@ -44,7 +44,7 @@ public class LogInGUI extends Frame {
 
         if(idOfAccount != -1){
             frame.dispose();
-            new ManagementSystemGUI(idOfAccount, username);
+            new ManagementSystemGUI(username);
         } else{
             JOptionPane.showMessageDialog(this,"Incorrect username or login");
         }

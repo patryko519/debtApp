@@ -111,30 +111,8 @@ public class DatabaseConnection {
             }
             statement.close();
         }catch (SQLException e) {
-            System.out.println("Nobody Owes You Anything");
+            System.out.println("Error");
         }
-
-//        try {
-//            String query = "SELECT buyer_id, amount, transaction_description FROM transactions WHERE debtor_id=?";
-//            PreparedStatement statement = connection.prepareStatement(query);
-//            statement.setInt(1, userId);
-//            ResultSet debtor = statement.executeQuery();
-//            String buyerName;
-//
-//            while (!debtor.isLast()) {
-//                debtor.next();
-//
-//                buyerName = getUsernameById(debtor.getInt("buyer_id"));
-//                amount = debtor.getInt("amount");
-//                descriptionOfTransaction = debtor.getString("transaction_description");
-//
-//                transaction.put(indexOfTransaction, "You owe " + buyerName + " " + amount + " for " + descriptionOfTransaction);
-//                indexOfTransaction++;
-//            }
-//            statement.close();
-//        } catch (SQLException e) {
-//            System.out.println("You don't owe anyone anything");
-//        }
 
         return transaction;
     }
