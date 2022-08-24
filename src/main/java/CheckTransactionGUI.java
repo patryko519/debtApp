@@ -4,10 +4,14 @@ import java.util.Vector;
 
 public class CheckTransactionGUI extends Frame{
 
-    private final String username;
-    private final JComboBox<String> list;
+    private final int userId;
+    private final JComboBox<String> listOfUsers;
+    private final JButton transactionType;
+    private JList<Tuple<Double,String>> listOfTransactions;
+    private JLabel emptyTransaction;
+
     public CheckTransactionGUI(String username) throws SQLException {
-        this.username = username;
+        userId = DatabaseConnection.getUserIdByName(username);
 
         frame.setSize(485,275);
 
@@ -17,8 +21,64 @@ public class CheckTransactionGUI extends Frame{
         Vector<String> names = DatabaseConnection.usersNames();
         names.remove(username);
 
-        list = new JComboBox<>(names);
-        list.setBounds(160,20,165,25);
-        panel.add(list);
+        transactionType = new JButton("Type of transaction");
+        transactionType.setBounds(160,10,165,25);
+        panel.add(transactionType);
+        transactionType.addActionListener(e -> typeOfTransaction());
+
+        listOfUsers = new JComboBox<>(names);
+        listOfUsers.setBounds(160,40,165,25);
+        panel.add(listOfUsers);
+    }
+
+    public void typeOfTransaction(){
+        if("Type of transaction".equals(transactionType.getText())){
+            transactionType.setText("Incoming");
+            incomingTransactions();
+        }else if("Incoming".equals(transactionType.getText())){
+            panel.remove(listOfTransactions);
+            transactionType.setText("Outgoing");
+            outgoingTransactions();
+        }else{
+            panel.remove(listOfTransactions);
+            transactionType.setText("Incoming");
+            incomingTransactions();
+        }
+    }
+
+    private void outgoingTransactions() {
+        String secondUser = listOfUsers.getItemAt(listOfUsers.getSelectedIndex());
+        int secondUserId = DatabaseConnection.getUserIdByName(secondUser);
+        Vector<Tuple<Double, String>> transactions = DatabaseConnection.checkTransactions(secondUserId, userId);
+
+        if(!transactions.isEmpty()){
+            listOfTransactions = new JList<>((transactions));
+            listOfTransactions.setBounds(160, 70, 100, 100);
+            panel.add(listOfTransactions);
+            panel.repaint();
+        }else{
+            emptyTransaction = new JLabel("List of transactions is empty");
+            emptyTransaction.setBounds(160,70,100,100);
+            panel.add(emptyTransaction);
+        }
+
+
+    }
+
+    private void incomingTransactions(){
+        String secondUser = listOfUsers.getItemAt(listOfUsers.getSelectedIndex());
+        int secondUserId = DatabaseConnection.getUserIdByName(secondUser);
+        Vector<Tuple<Double,String>> transactions = DatabaseConnection.checkTransactions(userId,secondUserId);
+
+        if(!transactions.isEmpty()){
+            listOfTransactions = new JList<>((transactions));
+            listOfTransactions.setBounds(160,70,100,100);
+            panel.add(listOfTransactions);
+            panel.repaint();
+        }else{
+            emptyTransaction = new JLabel("List of transactions is empty");
+            emptyTransaction.setBounds(160,70,100,100);
+            panel.add(emptyTransaction);
+        }
     }
 }
