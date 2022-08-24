@@ -1,5 +1,7 @@
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 
@@ -86,72 +88,53 @@ public class DatabaseConnection {
         return -1;
     }
 
-    public static boolean existsUserByName(String username){
-        connectionToDatabase();
-        try{
-            String query = "SELECT id FROM users WHERE username=?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, username);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-
-            return resultSet.getBoolean(1);
-        } catch (SQLException e) {
-            System.out.println("There is no such a user");
-            System.out.println("Enter correct name");
-        }
-        return false;
-    }
-
-    public static HashMap<Integer, String> checkTransactions(int userId) throws SQLException {
-        HashMap transaction = new HashMap<Integer, String>();
-        int amount;
+    public static Vector<Tuple<Double,String>> checkTransactions(int userId, int secondUserId){
+        Vector<Tuple<Double,String>> transaction = new Vector<>();
+        double amount;
         String descriptionOfTransaction;
-        int indexOfTransaction = 1;
         connectionToDatabase();
 
         try {
-            String query = "SELECT debtor_id, amount, transaction_description FROM transactions WHERE buyer_id=?";
+            String query = "SELECT amount, transaction_description FROM transactions WHERE buyer_id=? AND debtor_id=?";
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
+            statement.setInt(2, secondUserId);
             ResultSet buyer = statement.executeQuery();
-            String debtorName;
 
             while (!buyer.isLast()) {
                 buyer.next();
 
-                debtorName = getUsernameById(buyer.getInt("debtor_id"));
-                amount = buyer.getInt("amount");
+                amount = buyer.getDouble("amount");
                 descriptionOfTransaction = buyer.getString("transaction_description");
 
-                transaction.put(indexOfTransaction, debtorName + " owe you " + amount + " for " + descriptionOfTransaction);
-                indexOfTransaction++;
+                transaction.add(new Tuple(amount,descriptionOfTransaction));
             }
+            statement.close();
         }catch (SQLException e) {
             System.out.println("Nobody Owes You Anything");
         }
 
-        try {
-            String query = "SELECT buyer_id, amount, transaction_description FROM transactions WHERE debtor_id=?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, userId);
-            ResultSet debtor = statement.executeQuery();
-            String buyerName;
-
-            while (!debtor.isLast()) {
-                debtor.next();
-
-                buyerName = getUsernameById(debtor.getInt("buyer_id"));
-                amount = debtor.getInt("amount");
-                descriptionOfTransaction = debtor.getString("transaction_description");
-
-                transaction.put(indexOfTransaction, "You owe " + buyerName + " " + amount + " for " + descriptionOfTransaction);
-                indexOfTransaction++;
-            }
-            statement.close();
-        } catch (SQLException e) {
-            System.out.println("You don't owe anyone anything");
-        }
+//        try {
+//            String query = "SELECT buyer_id, amount, transaction_description FROM transactions WHERE debtor_id=?";
+//            PreparedStatement statement = connection.prepareStatement(query);
+//            statement.setInt(1, userId);
+//            ResultSet debtor = statement.executeQuery();
+//            String buyerName;
+//
+//            while (!debtor.isLast()) {
+//                debtor.next();
+//
+//                buyerName = getUsernameById(debtor.getInt("buyer_id"));
+//                amount = debtor.getInt("amount");
+//                descriptionOfTransaction = debtor.getString("transaction_description");
+//
+//                transaction.put(indexOfTransaction, "You owe " + buyerName + " " + amount + " for " + descriptionOfTransaction);
+//                indexOfTransaction++;
+//            }
+//            statement.close();
+//        } catch (SQLException e) {
+//            System.out.println("You don't owe anyone anything");
+//        }
 
         return transaction;
     }
