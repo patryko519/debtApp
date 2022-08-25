@@ -1,7 +1,6 @@
 import java.sql.*;
 import java.util.Vector;
 
-
 public class DatabaseConnection {
     private static Connection connection;
 

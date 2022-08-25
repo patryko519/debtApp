@@ -10,7 +10,6 @@ public class CheckTransactionGUI extends Frame{
     private JList<String> listOfTransactions;
     private final JLabel emptyTransaction;
 
-
     public CheckTransactionGUI(String username) throws SQLException {
         userId = DatabaseConnection.getUserIdByName(username);
 
@@ -74,7 +73,7 @@ public class CheckTransactionGUI extends Frame{
 
         if(!transactions.isEmpty()){
             listOfTransactions = new JList<>((transactions));
-            listOfTransactions.setBounds(190, 70, 105, 100);
+            listOfTransactions.setBounds(190, 70, 105, 120);
             panel.add(listOfTransactions);
             panel.repaint();
         }else{
@@ -84,8 +83,6 @@ public class CheckTransactionGUI extends Frame{
             panel.add(emptyTransaction);
             panel.repaint();
         }
-
-
     }
 
     private void incomingTransactions(){
@@ -95,7 +92,7 @@ public class CheckTransactionGUI extends Frame{
         listOfTransactions = new JList<>(transactions);
 
         if(!transactions.isEmpty()){
-            listOfTransactions.setVisibleRowCount(5);
+            listOfTransactions.setBounds(190, 70, 105, 120);
             panel.add(listOfTransactions);
             panel.repaint();
         }else{
@@ -103,8 +100,6 @@ public class CheckTransactionGUI extends Frame{
             emptyTransaction.setBounds(140,70,205,100);
             panel.add(emptyTransaction);
             panel.repaint();
-
         }
     }
-
 }
