@@ -7,8 +7,9 @@ public class CheckTransactionGUI extends Frame{
     private final int userId;
     private final JComboBox<String> listOfUsers;
     private final JButton transactionType;
-    private JList<Tuple<Double,String>> listOfTransactions;
-    private JLabel emptyTransaction;
+    private JList<String> listOfTransactions;
+    private final JLabel emptyTransaction;
+
 
     public CheckTransactionGUI(String username) throws SQLException {
         userId = DatabaseConnection.getUserIdByName(username);
@@ -67,7 +68,8 @@ public class CheckTransactionGUI extends Frame{
     private void outgoingTransactions() {
         String secondUser = listOfUsers.getItemAt(listOfUsers.getSelectedIndex());
         int secondUserId = DatabaseConnection.getUserIdByName(secondUser);
-        Vector<Tuple<Double, String>> transactions = DatabaseConnection.checkTransactions(secondUserId, userId);
+        Vector<String> transactions = DatabaseConnection.checkTransactions(secondUserId, userId);
+
         listOfTransactions = new JList<>((transactions));
 
         if(!transactions.isEmpty()){
@@ -89,11 +91,11 @@ public class CheckTransactionGUI extends Frame{
     private void incomingTransactions(){
         String secondUser = listOfUsers.getItemAt(listOfUsers.getSelectedIndex());
         int secondUserId = DatabaseConnection.getUserIdByName(secondUser);
-        Vector<Tuple<Double,String>> transactions = DatabaseConnection.checkTransactions(userId,secondUserId);
-        listOfTransactions = new JList<>((transactions));
+        Vector<String> transactions = DatabaseConnection.checkTransactions(userId,secondUserId);
+        listOfTransactions = new JList<>(transactions);
 
         if(!transactions.isEmpty()){
-            listOfTransactions.setBounds(190,70,105,100);
+            listOfTransactions.setVisibleRowCount(5);
             panel.add(listOfTransactions);
             panel.repaint();
         }else{
@@ -101,6 +103,8 @@ public class CheckTransactionGUI extends Frame{
             emptyTransaction.setBounds(140,70,205,100);
             panel.add(emptyTransaction);
             panel.repaint();
+
         }
     }
+
 }

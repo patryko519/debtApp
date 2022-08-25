@@ -1,7 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
 
 
@@ -88,8 +85,8 @@ public class DatabaseConnection {
         return -1;
     }
 
-    public static Vector<Tuple<Double,String>> checkTransactions(int userId, int secondUserId){
-        Vector<Tuple<Double,String>> transaction = new Vector<>();
+    public static Vector<String> checkTransactions(int userId, int secondUserId){
+        Vector<String> transactions = new Vector<>();
         double amount;
         String descriptionOfTransaction;
         connectionToDatabase();
@@ -99,39 +96,22 @@ public class DatabaseConnection {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.setInt(2, secondUserId);
-            ResultSet buyer = statement.executeQuery();
+            ResultSet transaction = statement.executeQuery();
 
-            while (!buyer.isLast()) {
-                buyer.next();
+            while (!transaction.isLast()) {
+                transaction.next();
 
-                amount = buyer.getDouble("amount");
-                descriptionOfTransaction = buyer.getString("transaction_description");
+                amount = transaction.getDouble("amount");
+                descriptionOfTransaction = transaction.getString("transaction_description");
 
-                transaction.add(new Tuple(amount,descriptionOfTransaction));
+                transactions.add(amount + " for " + descriptionOfTransaction);
             }
             statement.close();
         }catch (SQLException e) {
             System.out.println("Error");
         }
 
-        return transaction;
-    }
-
-    public static String getUsernameById(int userId) throws SQLException {
-        connectionToDatabase();
-        try {
-            String query = "SELECT username FROM users WHERE id=?";
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, userId);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-
-            String username = resultSet.getString("username");
-            statement.close();
-            return username;
-        } catch (SQLException e) {
-            throw new SQLException();
-        }
+        return transactions;
     }
 
     public static Vector<String> usersNames() throws SQLException {
@@ -155,10 +135,4 @@ public class DatabaseConnection {
         return names;
     }
 
-    public static void main(String[] args) throws SQLException {
-        Vector<String> test = usersNames();
-        for(String names : test){
-            System.out.println(names);
-        }
-    }
 }

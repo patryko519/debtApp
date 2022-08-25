@@ -16,8 +16,6 @@ public class AddTransactionGUI extends Frame {
     public AddTransactionGUI(String username) throws SQLException {
         this.username = username;
 
-        int userId = DatabaseConnection.getUserIdByName(username);
-
         frame.setSize(485,275);
 
         frame.add(panel);
